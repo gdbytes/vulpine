@@ -1,4 +1,5 @@
 <?php
+
 namespace Vulpine;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
@@ -14,7 +15,8 @@ class Database
         'driver' => 'mysql',
         'host' => 'localhost',
         'charset' => 'utf8',
-        'collation' => 'latin1_swedish_ci'
+        'collation' => 'latin1_swedish_ci',
+        'prefix' => ''
     ];
 
     /**
