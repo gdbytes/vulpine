@@ -2,12 +2,8 @@
 
 namespace Vulpine;
 
-use Sofa\Eloquence\Eloquence;
-use Sofa\Eloquence\Mappable;
-
 class Product extends Model
 {
-    use Eloquence, Mappable;
     /**
      * The table associated with the model.
      *
@@ -30,13 +26,11 @@ class Product extends Model
     protected $with = ['pricing', 'group'];
 
     /**
-     * Define mappings on the model.
+     * Show hidden items as default.
      *
-     * @var array
+     * @var bool
      */
-    protected $maps = [
-
-    ];
+    protected $excludeHidden = false;
 
     /**
      * Get the pricing for the product.
@@ -56,5 +50,42 @@ class Product extends Model
     public function group()
     {
         return $this->hasOne(ProductGroup::class, 'id', 'gid');
+    }
+
+    /**
+     * Does product offer a free domain.
+     *
+     * @return bool
+     */
+    public function hasFreeDomain()
+    {
+        return !empty($this->freedomain) ? true : false;
+    }
+
+    /**
+     * Is the product a featured product.
+     *
+     * @return bool
+     */
+    public function isFeatured()
+    {
+        return !empty($this->is_featured) ? true : false;
+    }
+
+    /**
+     * Overriding newQuery() to the custom ProductBuilder.
+     *
+     * @return ProductBuilder
+     */
+    public function newQuery()
+    {
+        $builder = new ProductBuilder($this->newBaseQueryBuilder());
+        $builder->setModel($this)->with($this->with);
+
+        if (isset($this->excludeHidden) && $this->excludeHidden == true) {
+            $builder->where('hidden', 0);
+        }
+
+        return $builder;
     }
 }
