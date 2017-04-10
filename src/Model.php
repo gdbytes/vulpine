@@ -2,7 +2,6 @@
 
 namespace Vulpine;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -11,15 +10,29 @@ class Model extends Eloquent
 {
     /**
      * Model constructor.
+     *
+     * @param array $attributes
      */
-    public function __construct()
+    public function __construct(array $attributes = array())
     {
+        parent::__construct($attributes);
+
         $this->configureDatabaseConnection();
     }
 
     /**
+     * Get the hidden column name.
+     *
+     * @return mixed|string
+     */
+    public function getHiddenColumn()
+    {
+        return property_exists($this, 'hiddenColumn') ? $this->hiddenColumn : 'hidden';
+    }
+
+    /**
      * Define a one-to-one relationship.
-     * No longer necessary for Laravel >=5.4 - keeping for backwards compatibility.
+     * No longer necessary for Laravel >=5.4 - retaining for backwards compatibility.
      *
      * @param  string  $related
      * @param  string  $foreignKey
@@ -39,7 +52,7 @@ class Model extends Eloquent
 
     /**
      * Define a one-to-many relationship.
-     * No longer necessary for Laravel >=5.4 - keeping for backwards compatibility.
+     * No longer necessary for Laravel >=5.4 - retaining for backwards compatibility.
      *
      * @param  string  $related
      * @param  string  $foreignKey
@@ -55,37 +68,6 @@ class Model extends Eloquent
         }
         $localKey = $localKey ?: $this->getKeyName();
         return new HasMany($instance->newQuery(), $this, $instance->getTable().'.'.$foreignKey, $localKey);
-    }
-
-    /**
-     * Get the relation value setting the connection name.
-     *
-     * @param string $key
-     *
-     * @return mixed
-     */
-    public function getRelationValue($key)
-    {
-        $relation = parent::getRelationValue($key);
-        if ($relation instanceof Collection) {
-            $relation->each(function ($model) {
-                $this->setRelationConnection($model);
-            });
-            return $relation;
-        }
-        $this->setRelationConnection($relation);
-        return $relation;
-    }
-    /**
-     * Set the connection name to model.
-     *
-     * @param $model
-     */
-    protected function setRelationConnection($model)
-    {
-        if ($model instanceof Eloquent) {
-            $model->setConnection($this->getConnectionName());
-        }
     }
 
     /**
