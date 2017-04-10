@@ -30,7 +30,7 @@ class Product extends Model
     protected $with = ['pricing', 'group'];
 
     /**
-     * Show hidden items as default.
+     * Hide hidden items as default.
      *
      * @var bool
      */
@@ -251,6 +251,8 @@ class Product extends Model
      */
     public function getSetupFee($paymentTerms)
     {
-        return $this->pricing->$paymentTerms;
+        $column = $paymentTerms[0] . 'setupfee';
+
+        return $this->pricing->$column;
     }
 }
