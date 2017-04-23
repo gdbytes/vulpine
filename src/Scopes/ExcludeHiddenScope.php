@@ -17,8 +17,8 @@ class ExcludeHiddenScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        $column = $model->getHiddenColumn();
         if (property_exists($model, 'excludeHidden') && $model->excludeHidden) {
+            $column = $model->getHiddenColumn();
             $builder->where($column, 0);
         }
     }

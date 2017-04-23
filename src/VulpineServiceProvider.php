@@ -1,5 +1,5 @@
 <?php
-namespace Vulpine\Laravel;
+namespace Vulpine;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -20,7 +20,7 @@ class VulpineServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/vulpine.php' => config_path($this->packageName . '.php'),
+            __DIR__ . '/../config/vulpine.php' => config_path($this->packageName . '.php'),
         ], 'config');
     }
 
@@ -31,6 +31,8 @@ class VulpineServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // ...
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/vulpine.php', $this->packageName
+        );
     }
 }

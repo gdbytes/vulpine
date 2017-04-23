@@ -2,6 +2,7 @@
 
 namespace Vulpine;
 
+use Vulpine\Helpers\Helper;
 use Vulpine\Traits\ExcludeHidden;
 
 class Product extends Model
@@ -149,7 +150,12 @@ class Product extends Model
      */
     public function getDiskSpaceAttribute()
     {
+        if (!empty($this->configoption3)) {
+            return Helper::formatMegabytes($this->configoption3);
+        }
+
         return $this->configoption3;
+
     }
 
     /**
@@ -169,7 +175,12 @@ class Product extends Model
      */
     public function getBandwidthAttribute()
     {
+        if (!empty($this->configoption5)) {
+            return Helper::formatMegabytes($this->configoption5);
+        }
+
         return $this->configoption5;
+
     }
 
     /**
@@ -199,6 +210,10 @@ class Product extends Model
      */
     public function getResellerDiskSpaceAttribute()
     {
+        if (!empty($this->configoption17)) {
+            return Helper::formatMegabytes($this->configoption17);
+        }
+
         return $this->configoption17;
     }
 
@@ -209,6 +224,10 @@ class Product extends Model
      */
     public function getResellerBandwidthAttribute()
     {
+        if (!empty($this->configoption18)) {
+            return Helper::formatMegabytes($this->configoption18);
+        }
+
         return $this->configoption18;
     }
 
@@ -240,6 +259,10 @@ class Product extends Model
      */
     public function getPricing($paymentTerms)
     {
+        if (isset($this->pricing) && !empty($this->pricing->$paymentTerms)) {
+            return Helper::formatPrice($this->pricing->$paymentTerms);
+        }
+
         return $this->pricing->$paymentTerms;
     }
 
@@ -252,6 +275,10 @@ class Product extends Model
     public function getSetupFee($paymentTerms)
     {
         $column = $paymentTerms[0] . 'setupfee';
+
+        if (isset($this->pricing) && !empty($this->pricing->$column)) {
+            return Helper::formatPrice($this->pricing->$column);
+        }
 
         return $this->pricing->$column;
     }

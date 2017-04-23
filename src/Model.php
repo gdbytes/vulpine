@@ -77,7 +77,7 @@ class Model extends Eloquent
      */
     protected function configureDatabaseConnection()
     {
-        if (defined('LARAVEL_START') and function_exists('config')) {
+        if (defined('LARAVEL_START') && function_exists('config')) {
             if ($connection = config('vulpine.connection')) {
                 $this->connection = $connection;
             } elseif (config('database.connections.vulpine')) {
