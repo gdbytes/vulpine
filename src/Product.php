@@ -48,7 +48,7 @@ class Product extends Model
     }
 
     /**
-     * A product belongs to a group.
+     * A product belongs to a gro
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */

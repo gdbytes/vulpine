@@ -20,4 +20,14 @@ class Price extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    /**
+     * A pricing entry belongs to a domain.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function domain()
+    {
+        return $this->belongsTo(Domain::class);
+    }
 }
