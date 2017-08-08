@@ -48,13 +48,13 @@ class Product extends Model
     }
 
     /**
-     * Get the group associated with the product.
+     * A product belongs to a group.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function group()
     {
-        return $this->hasOne(ProductGroup::class, 'id', 'gid');
+        return $this->belongsTo(ProductGroup::class);
     }
 
     /**

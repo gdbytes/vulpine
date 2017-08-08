@@ -10,4 +10,14 @@ class Price extends Model
      * @var string
      */
     protected $table = 'tblpricing';
+
+    /**
+     * A pricing entry belongs to a product.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }
