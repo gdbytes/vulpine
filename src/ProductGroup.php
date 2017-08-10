@@ -23,6 +23,13 @@ class ProductGroup extends Model
     protected $dates = ['created_at', 'updated_at'];
 
     /**
+     * Eager load relationships.
+     *
+     * @var array
+     */
+    protected $with = ['products'];
+
+    /**
      * Hide hidden items as default.
      *
      * @var bool

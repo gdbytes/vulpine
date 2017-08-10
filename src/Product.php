@@ -28,7 +28,7 @@ class Product extends Model
      *
      * @var array
      */
-    protected $with = ['pricing', 'group'];
+    protected $with = ['pricing'];
 
     /**
      * Hide hidden items as default.
