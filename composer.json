@@ -1,6 +1,6 @@
 {
     "name": "goodbytes/vulpine",
-    "description": "Use WHMCS backend with any PHP framework",
+    "description": "Use WHMCS backend with Laravel",
     "homepage": "http://github.com/goodbytes-gb/vulpine",
     "license": "MIT",
     "authors": [
@@ -11,9 +11,9 @@
         }
     ],
     "require": {
-        "php":  ">=5.6.0",
-        "illuminate/support": ">=5.1. <=5.4",
-        "illuminate/database": ">=5.1. <=5.4"
+        "php":  ">=5.6.4",
+        "illuminate/support": "~5.4.0",
+        "illuminate/database": "~5.4.0"
     },
     "require-dev": {
         "phpunit/phpunit": ">=4.8.34"
@@ -25,5 +25,12 @@
         "classmap": [
             "models"
         ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Vulpine\\Laravel\\CorcelServiceProvider"
+            ]
+        }
     }
 }
