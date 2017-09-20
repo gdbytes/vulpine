@@ -2,6 +2,7 @@
 namespace Vulpine\Laravel;
 
 use Illuminate\Support\ServiceProvider;
+use Vulpine\Services\Whmcs;
 
 class VulpineServiceProvider extends ServiceProvider
 {
@@ -34,5 +35,7 @@ class VulpineServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__ . '/config.php', $this->packageName
         );
+
+        $this->app->bind('whmcs', Whmcs::class);
     }
 }

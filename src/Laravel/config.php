@@ -20,5 +20,32 @@ return [
      * Used for formatting currencies.
      * You can find your locale here: https://msdn.microsoft.com/en-us/library/ee825488%28v=cs.20%29.aspx?f=255&MSPPError=-2147217396
      */
-    'locale' => 'en_GB'
+    'locale' => 'en_GB',
+
+    'whmcs' => [
+        /**
+         * Full URL Full to your WHMCS API. It includes with /includes/api.php location.
+         */
+        'api_url' => env('WHMCS_API_URL', ''),
+        /**
+         * Username of WHMCS account who has API Access, Full Administrator or Administrator.
+         */
+        'identifier'	=>	env('WHMCS_IDENTIFIER', ''),
+
+        /**
+         * If your authentication type is password, fill this with your password of username you use in this package.
+         * Unless, use API key for authentication
+         */
+        'secret'	=>	env('WHMCS_SECRET', ''),
+        /*
+        |--------------------------------------------------------------------------
+        | Response
+        |--------------------------------------------------------------------------
+        |
+        | Response data you want to receive. It can be as an object or an array
+        |
+        */
+        'response'=> 'json' // json or xml
+
+    ],
 ];
