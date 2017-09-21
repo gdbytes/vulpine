@@ -1,6 +1,6 @@
 <?php
 
-namespace Vulpine\Laravel;
+namespace Vulpine\Laravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

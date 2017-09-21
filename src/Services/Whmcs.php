@@ -2,10 +2,12 @@
 
 namespace Vulpine\Services;
 
-use Guzzle\Http\Client;
-use Guzzle\Http\Exception\RequestException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use InvalidArgumentException;
-use Exception;
+use Vulpine\Exceptions\FatalErrorException;
+use Vulpine\Exceptions\NotFoundException;
+use Vulpine\Exceptions\WhmcsException;
 
 class Whmcs
 {
@@ -63,15 +65,15 @@ class Whmcs
     private function validate()
     {
         if (empty($this->whmcsApiUrl)) {
-            throw new InvalidArgumentException('Please set WHMCS_API_URL, environment variables.');
+            throw new InvalidArgumentException('Please set WHMCS_API_URL, environment variable.');
         }
 
         if (empty($this->whmcsIdentifier)) {
-            throw new InvalidArgumentException('Please set WHMCS_IDENTIFIER, environment variables.');
+            throw new InvalidArgumentException('Please set WHMCS_IDENTIFIER, environment variable.');
         }
 
         if (empty($this->whmcsSecret)) {
-            throw new InvalidArgumentException('Please set WHMCS_SECRET, environment variables.');
+            throw new InvalidArgumentException('Please set WHMCS_SECRET, environment variable.');
         }
     }
 
@@ -114,17 +116,16 @@ class Whmcs
             $response = $this->client->post($this->whmcsApiUrl, [
                 'form_params' => array_merge($requiredParameters, $params)
             ]);
-        } catch (RequestException $e) {
-            if ($e->hasResponse()) {
-                $exception = (string) $e->getResponse()->getBody();
-                $exception = json_decode($exception);
-                return $exception;
-            } else {
-                return $e->getMessage();
+
+            $this->handleResponse($response);
+        } catch (ClientException $e) {
+            $response = $e->getResponse();
+            if ($response && $response->getStatusCode() === 404) {
+                throw new NotFoundException('The WHMCS API URL is invalid (404 - Not Found)');
+            } else if ($response && $response->getStatusCode() === 500) {
+                throw new FatalErrorException('The WHMCS API URL is unavailable (500 - Internal Server Error)');
             }
         }
-
-        $this->handleResponse($response);
     }
 
     /**
@@ -133,15 +134,15 @@ class Whmcs
      * @param $response
      *
      * @return mixed
-     * @throws Exception
+     * @throws \Vulpine\Exceptions\WhmcsException
      */
     private function handleResponse($response)
     {
         $decodedResponse = json_decode($response->getBody()->getContents(), true);
 
-        if (isset($decodedResponse['result'], $decodedResponse['status']) &&
-            ($decodedResponse['result'] !== 'success' || $decodedResponse['status'] !== 'success')) {
-                throw new Exception('WHMCS Response Error: ' . $decodedResponse['message']);
+        if ((isset($decodedResponse['result']) && $decodedResponse['result'] === 'error') ||
+            (isset($decodedResponse['status']) && $decodedResponse['status'] === 'error')) {
+            throw new WhmcsException('WHMCS Response Error : ' . $decodedResponse['message']);
         }
 
         return json_decode(json_encode($decodedResponse), true);
