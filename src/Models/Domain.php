@@ -1,6 +1,6 @@
 <?php
 
-namespace Vulpine;
+namespace Vulpine\Models;
 
 class Domain extends Model
 {
@@ -30,7 +30,7 @@ class Domain extends Model
      *
      * @var array
      */
-    protected $mapPricing = [
+    protected static $mapPricing = [
         'year1' => 'msetupfee',
         'year2' => 'qsetupfee',
         'year3' => 'ssetupfee',
@@ -43,7 +43,7 @@ class Domain extends Model
      *
      * @var array
      */
-    protected $mapTypes = [
+    protected static $mapTypes = [
         'register' => 'domainregister',
         'transfer' => 'domaintransfer',
         'renew'    => 'domainrenew'
@@ -52,7 +52,7 @@ class Domain extends Model
     /**
      * Get the pricing for the domain.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return $this
      */
     public function pricing()
     {
@@ -64,15 +64,16 @@ class Domain extends Model
     /**
      * Loop through the domain prices and grab the relevant registration price.
      *
-     * @param $year
+     * @param        $year
      * @param string $type
-     * @return string
+     *
+     * @return mixed
      */
     public function getDomainPrice($year, $type = 'register')
     {
         foreach ($this->pricing as $price) {
-            if ($price['type'] == $this->mapTypes[$type]) {
-                return $price[$this->mapPricing[$year]];
+            if ($price['type'] === self::$mapTypes[$type]) {
+                return $price[self::$mapPricing[$year]];
             }
         }
     }

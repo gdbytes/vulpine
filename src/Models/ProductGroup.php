@@ -1,6 +1,6 @@
 <?php
 
-namespace Vulpine;
+namespace Vulpine\Models;
 
 use Vulpine\Traits\ExcludeHidden;
 

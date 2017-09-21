@@ -1,8 +1,7 @@
 <?php
-namespace Vulpine\Laravel;
+namespace Vulpine;
 
 use Illuminate\Support\ServiceProvider;
-use Vulpine\Services\Whmcs;
 
 class VulpineServiceProvider extends ServiceProvider
 {
@@ -11,7 +10,7 @@ class VulpineServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $packageName = 'vulpine';
+    private $packageName = 'vulpine';
 
     /**
      * Perform post-registration booting of services.
@@ -21,7 +20,7 @@ class VulpineServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/config.php' => config_path($this->packageName . '.php'),
+            __DIR__ . '/config/' . $this->packageName .'.php' => config_path($this->packageName . '.php'),
         ], 'config');
     }
 
@@ -33,7 +32,7 @@ class VulpineServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/config.php', $this->packageName
+            __DIR__ . '/config/' . $this->packageName .'.php', $this->packageName
         );
 
         $this->app->bind('whmcs', Whmcs::class);

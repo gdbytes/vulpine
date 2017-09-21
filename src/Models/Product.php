@@ -1,8 +1,7 @@
 <?php
 
-namespace Vulpine;
+namespace Vulpine\Models;
 
-use Vulpine\Helpers\Helper;
 use Vulpine\Traits\ExcludeHidden;
 
 class Product extends Model
@@ -62,6 +61,7 @@ class Product extends Model
      *
      * @param $query
      * @param $productType
+     *
      * @return mixed
      */
     public function scopeType($query, $productType)
@@ -73,6 +73,7 @@ class Product extends Model
      * Show only hosting account products.
      *
      * @param $query
+     *
      * @return mixed
      */
     public function scopeHostingAccounts($query)
@@ -84,7 +85,8 @@ class Product extends Model
      * Show only reseller account products.
      *
      * @param $query
-     * @return ProductBuilder
+     *
+     * @return mixed
      */
     public function scopeResellerAccount($query)
     {
@@ -95,7 +97,8 @@ class Product extends Model
      * Show only server account products.
      *
      * @param $query
-     * @return ProductBuilder
+     *
+     * @return mixed
      */
     public function scopeServers($query)
     {
@@ -106,7 +109,8 @@ class Product extends Model
      * Show only 'other' products (SSL certs, etc...).
      *
      * @param $query
-     * @return ProductBuilder
+     *
+     * @return mixed
      */
     public function scopeOther($query)
     {
@@ -134,9 +138,9 @@ class Product extends Model
     }
 
     /**
-     * Get the package name.
+     *  Get the package name.
      *
-     * @return mixed
+     * @return string
      */
     public function getPackageNameAttribute()
     {
@@ -146,12 +150,12 @@ class Product extends Model
     /**
      * Get product disk space.
      *
-     * @return mixed
+     * @return mixed|string
      */
     public function getDiskSpaceAttribute()
     {
         if (!empty($this->configoption3)) {
-            return Helper::formatMegabytes($this->configoption3);
+            return format_megabytes($this->configoption3);
         }
 
         return $this->configoption3;
@@ -161,7 +165,7 @@ class Product extends Model
     /**
      * Get no # of email accounts for product.
      *
-     * @return mixed
+     * @return string
      */
     public function getEmailAccountsAttribute()
     {
@@ -171,12 +175,12 @@ class Product extends Model
     /**
      * Get product bandwidth.
      *
-     * @return mixed
+     * @return mixed|string
      */
     public function getBandwidthAttribute()
     {
         if (!empty($this->configoption5)) {
-            return Helper::formatMegabytes($this->configoption5);
+            return format_megabytes($this->configoption5);
         }
 
         return $this->configoption5;
@@ -206,12 +210,12 @@ class Product extends Model
     /**
      * Get product reseller disk space.
      *
-     * @return mixed
+     * @return mixed|string
      */
     public function getResellerDiskSpaceAttribute()
     {
         if (!empty($this->configoption17)) {
-            return Helper::formatMegabytes($this->configoption17);
+            return format_megabytes($this->configoption17);
         }
 
         return $this->configoption17;
@@ -220,12 +224,12 @@ class Product extends Model
     /**
      * Get product reseller bandwidth.
      *
-     * @return mixed
+     * @return mixed|string
      */
     public function getResellerBandwidthAttribute()
     {
         if (!empty($this->configoption18)) {
-            return Helper::formatMegabytes($this->configoption18);
+            return format_megabytes($this->configoption18);
         }
 
         return $this->configoption18;
@@ -255,14 +259,11 @@ class Product extends Model
      * Get pricing for a given frequency/payment term.
      *
      * @param $paymentTerms
+     *
      * @return mixed
      */
     public function getPricing($paymentTerms)
     {
-        if (isset($this->pricing) && !empty($this->pricing->$paymentTerms)) {
-            return Helper::formatPrice($this->pricing->$paymentTerms);
-        }
-
         return $this->pricing->$paymentTerms;
     }
 
@@ -270,15 +271,12 @@ class Product extends Model
      * Get setup fee for given frequency/payment term.
      *
      * @param $paymentTerms
+     *
      * @return mixed
      */
     public function getSetupFee($paymentTerms)
     {
         $column = $paymentTerms[0] . 'setupfee';
-
-        if (isset($this->pricing) && !empty($this->pricing->$column)) {
-            return Helper::formatPrice($this->pricing->$column);
-        }
 
         return $this->pricing->$column;
     }

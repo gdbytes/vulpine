@@ -10,6 +10,7 @@ trait ExcludeHidden
      * The "booting" method of the model.
      *
      * @return void
+     * @throws \InvalidArgumentException
      */
     public static function bootExcludeHidden()
     {

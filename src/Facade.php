@@ -2,9 +2,9 @@
 
 namespace Vulpine\Laravel\Facades;
 
-use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Facades\Facade as IlluminateFacade;
 
-class Whmcs extends Facade
+class Facade extends IlluminateFacade
 {
     /**
      * Get the registered name of the component.

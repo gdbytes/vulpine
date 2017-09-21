@@ -1,6 +1,6 @@
 <?php
 
-namespace Vulpine;
+namespace Vulpine\Models;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Model as Eloquent;

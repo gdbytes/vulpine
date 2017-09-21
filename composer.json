@@ -23,7 +23,8 @@
         "psr-4": {
             "Vulpine\\": "src/"
         },
-        "classmap": [
+        "files": [
+            "src/helpers.php"
         ]
     }
 }

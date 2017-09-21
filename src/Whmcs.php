@@ -1,6 +1,6 @@
 <?php
 
-namespace Vulpine\Services;
+namespace Vulpine;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -117,7 +117,7 @@ class Whmcs
                 'form_params' => array_merge($requiredParameters, $params)
             ]);
 
-            $this->handleResponse($response);
+            return $this->handleResponse($response);
         } catch (ClientException $e) {
             $response = $e->getResponse();
             if ($response && $response->getStatusCode() === 404) {
