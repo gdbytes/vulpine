@@ -40,6 +40,13 @@ class Whmcs
     protected $client;
 
     /**
+     * WHMCS API Response type.
+     *
+     * @var string
+     */
+    protected $responseType;
+
+    /**
      * Whmcs constructor.
      *
      * @throws InvalidArgumentException
@@ -49,6 +56,7 @@ class Whmcs
         $this->whmcsApiUrl = config('vulpine.whmcs.api_url');
         $this->whmcsIdentifier = config('vulpine.whmcs.identifier');
         $this->whmcsSecret = config('vulpine.whmcs.secret');
+        $this->responseType = strtolower(config('vulpine.whmcs.response', 'json'));
 
         // Ensure required properties are set before continuing.
         $this->validate();
@@ -88,6 +96,7 @@ class Whmcs
             'timeout' => 30,
             'headers' => [
                 'User-Agent' => null,
+                'Accept'     => 'application/json'
             ]
         ]);
 
@@ -108,7 +117,7 @@ class Whmcs
         $requiredParameters = [
             'username'      => $this->whmcsIdentifier,
             'password'      => $this->whmcsSecret,
-            'responsetype'  => config('vulpine.whmcs.response', 'json'),
+            'responsetype'  => $this->responseType,
             'action'        => $action
         ];
 
@@ -129,7 +138,7 @@ class Whmcs
     }
 
     /**
-     * Handle the response and return json.
+     * Handle the response and return in relevant format.
      *
      * @param $response
      *
@@ -138,14 +147,18 @@ class Whmcs
      */
     private function handleResponse($response)
     {
-        $decodedResponse = json_decode($response->getBody()->getContents(), true);
+        $decodedResponse = json_decode($response->getBody(), true);
 
         if ((isset($decodedResponse['result']) && $decodedResponse['result'] === 'error') ||
             (isset($decodedResponse['status']) && $decodedResponse['status'] === 'error')) {
             throw new WhmcsException('WHMCS Response Error : ' . $decodedResponse['message']);
         }
 
-        return json_decode(json_encode($decodedResponse), true);
+        if ($this->responseType === 'xml') {
+            return simplexml_load_string($response->getBody());
+        }
+
+        return $decodedResponse;
     }
 
     /**

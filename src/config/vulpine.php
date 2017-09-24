@@ -41,9 +41,9 @@ return [
 
         /**
          * Configure the format in which you would like response data to be sent in.
-         * 'json' is the recommended/default format. 'xml' is also supported.
+         * 'json' is the recommended/default format. 'xml' is also supported, however,
+         * during testing we noticed xml errors with the response from WHMCS.
          */
         'response'=> 'json' // json or xml
-
     ],
 ];
