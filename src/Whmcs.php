@@ -115,8 +115,8 @@ class Whmcs
     public function execute($action, array $params = [])
     {
         $requiredParameters = [
-            'username'      => $this->whmcsIdentifier,
-            'password'      => $this->whmcsSecret,
+            'identifier'      => $this->whmcsIdentifier,
+            'secret'      => $this->whmcsSecret,
             'responsetype'  => $this->responseType,
             'action'        => $action
         ];

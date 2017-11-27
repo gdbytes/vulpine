@@ -1,7 +1,8 @@
 <?php
-namespace Vulpine;
+namespace Vulpine\Laravel;
 
 use Illuminate\Support\ServiceProvider;
+use Vulpine\Whmcs;
 
 class VulpineServiceProvider extends ServiceProvider
 {
@@ -20,7 +21,7 @@ class VulpineServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/config/' . $this->packageName .'.php' => config_path($this->packageName . '.php'),
+            dirname(__DIR__ ) . '/config/' . $this->packageName .'.php' => config_path($this->packageName . '.php'),
         ], 'config');
     }
 
@@ -28,13 +29,18 @@ class VulpineServiceProvider extends ServiceProvider
      * Register bindings in the container.
      *
      * @return void
+     * @throws \InvalidArgumentException
      */
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/config/' . $this->packageName .'.php', $this->packageName
+            dirname(__DIR__ ) . '/config/' . $this->packageName .'.php', $this->packageName
         );
 
-        $this->app->bind('whmcs', Whmcs::class);
+        $this->app->singleton(Whmcs::class, function() {
+            return new Whmcs();
+        });
+
+        $this->app->alias(Whmcs::class, 'whmcs');
     }
 }
