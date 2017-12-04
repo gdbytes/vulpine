@@ -52,7 +52,7 @@ class Domain extends Model
     /**
      * Get the pricing for the domain.
      *
-     * @return $this
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany $this
      */
     public function pricing()
     {

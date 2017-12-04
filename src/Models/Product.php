@@ -2,6 +2,7 @@
 
 namespace Vulpine\Models;
 
+use Illuminate\Database\Query\Builder;
 use Vulpine\Traits\ExcludeHidden;
 
 class Product extends Model
@@ -39,7 +40,7 @@ class Product extends Model
     /**
      * Get the pricing for the product.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne HasOne
      */
     public function pricing()
     {
@@ -49,7 +50,7 @@ class Product extends Model
     /**
      * A product belongs to a gro
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function group()
     {
@@ -62,9 +63,9 @@ class Product extends Model
      * @param $query
      * @param $productType
      *
-     * @return mixed
+     * @return Builder $query
      */
-    public function scopeType($query, $productType)
+    public function scopeType(Builder $query, $productType)
     {
         return $query->where('type', $productType);
     }
@@ -74,9 +75,9 @@ class Product extends Model
      *
      * @param $query
      *
-     * @return mixed
+     * @return Builder $query
      */
-    public function scopeHostingAccounts($query)
+    public function scopeHostingAccounts(Builder $query)
     {
         return $this->scopeType($query, 'hostingaccount');
     }
@@ -86,9 +87,9 @@ class Product extends Model
      *
      * @param $query
      *
-     * @return mixed
+     * @return Builder $query
      */
-    public function scopeResellerAccount($query)
+    public function scopeResellerAccount(Builder $query)
     {
         return $this->scopeType($query, 'reselleraccount');
     }
@@ -98,9 +99,9 @@ class Product extends Model
      *
      * @param $query
      *
-     * @return mixed
+     * @return Builder $query
      */
-    public function scopeServers($query)
+    public function scopeServers(Builder $query)
     {
         return $this->scopeType($query, 'server');
     }
@@ -110,9 +111,9 @@ class Product extends Model
      *
      * @param $query
      *
-     * @return mixed
+     * @return Builder $query
      */
-    public function scopeOther($query)
+    public function scopeOther(Builder $query)
     {
         return $this->scopeType($query, 'other');
     }
@@ -150,7 +151,7 @@ class Product extends Model
     /**
      * Get product disk space.
      *
-     * @return mixed|string
+     * @return string
      */
     public function getDiskSpaceAttribute()
     {
@@ -175,7 +176,7 @@ class Product extends Model
     /**
      * Get product bandwidth.
      *
-     * @return mixed|string
+     * @return string
      */
     public function getBandwidthAttribute()
     {
@@ -190,7 +191,7 @@ class Product extends Model
     /**
      * Get no # of databases for product.
      *
-     * @return mixed
+     * @return string
      */
     public function getDatabasesAttribute()
     {
@@ -200,7 +201,7 @@ class Product extends Model
     /**
      * Get no # of addon sites for product.
      *
-     * @return mixed
+     * @return string
      */
     public function getAddonSitesAttribute()
     {
@@ -210,7 +211,7 @@ class Product extends Model
     /**
      * Get product reseller disk space.
      *
-     * @return mixed|string
+     * @return string
      */
     public function getResellerDiskSpaceAttribute()
     {
@@ -224,7 +225,7 @@ class Product extends Model
     /**
      * Get product reseller bandwidth.
      *
-     * @return mixed|string
+     * @return string
      */
     public function getResellerBandwidthAttribute()
     {
@@ -260,7 +261,7 @@ class Product extends Model
      *
      * @param $paymentTerms
      *
-     * @return mixed
+     * @return string
      */
     public function getPricing($paymentTerms)
     {
@@ -272,7 +273,7 @@ class Product extends Model
      *
      * @param $paymentTerms
      *
-     * @return mixed
+     * @return string
      */
     public function getSetupFee($paymentTerms)
     {

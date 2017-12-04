@@ -35,7 +35,7 @@ class Whmcs
     /**
      * The client connection to WHMCS.
      *
-     * @var \Guzzle\Http\Client
+     * @var \GuzzleHttp\Client
      */
     protected $client;
 
@@ -88,7 +88,7 @@ class Whmcs
     /**
      * Initialize the Guzzle client.
      *
-     * @return \Guzzle\Http\Client
+     * @return \GuzzleHttp\Client
      */
     private function initializeClient()
     {
@@ -115,8 +115,8 @@ class Whmcs
     public function execute($action, array $params = [])
     {
         $requiredParameters = [
-            'identifier'      => $this->whmcsIdentifier,
-            'secret'      => $this->whmcsSecret,
+            'identifier'    => $this->whmcsIdentifier,
+            'secret'        => $this->whmcsSecret,
             'responsetype'  => $this->responseType,
             'action'        => $action
         ];

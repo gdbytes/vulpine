@@ -14,7 +14,7 @@ class Model extends Eloquent
     /**
      * Get the hidden column name.
      *
-     * @return mixed|string
+     * @return string
      */
     public function getHiddenColumn()
     {

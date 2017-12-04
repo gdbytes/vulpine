@@ -2,6 +2,8 @@
 
 namespace Vulpine\Models;
 
+use Illuminate\Database\Query\Builder;
+
 class Currency extends Model
 {
     /**
@@ -14,11 +16,11 @@ class Currency extends Model
     /**
      * Query scope to get the default currency.
      *
-     * @param $query
+     * @param Builder $query
      *
-     * @return mixed
+     * @return Builder $query
      */
-    public function scopeDefault($query)
+    public function scopeDefault(Builder $query)
     {
         return $query->where('default', 1);
     }
